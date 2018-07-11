@@ -37,3 +37,10 @@ Running your program with this input would look something like this:
 ```
 
 This is because the larger groups on the right of the input have overlapping bounding boxes, so the returned coordinates bound the smaller group on the top left.
+
+## Running the Build
+This build was created and tested using Java 8(1.8.0_161).
+Running the built jar file should look something like this:
+```
+> cat input/test2.txt | java -jar build/BoundingBox.jar
+```
