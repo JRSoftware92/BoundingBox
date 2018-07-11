@@ -23,9 +23,35 @@ public class BoundingBoxUtil {
             boundingBoxes.add(getBoundingBox(points));
         }
 
-        Collections.sort(boundingBoxes);
+        LinkedList<BoundingBox> nonIntersectionBoxes = getNonIntersectingBoundingBoxes(boundingBoxes);
 
-        return boundingBoxes.getLast();
+        Collections.sort(nonIntersectionBoxes);
+        return nonIntersectionBoxes.getLast();
+    }
+
+    // Assumes the input list is not null
+    private static LinkedList<BoundingBox> getNonIntersectingBoundingBoxes(LinkedList<BoundingBox> boundingBoxes){
+        LinkedList<BoundingBox> output = new LinkedList<>();
+        int size = boundingBoxes.size();
+
+        BoundingBox subject;
+        boolean intersection;
+        for(int i = 0; i < size; i++){
+            subject = boundingBoxes.get(i);
+            intersection = false;
+            for(int j = 0; j < size; j++){
+                if(i != j && subject.intersectsWith(boundingBoxes.get(j))){
+                    intersection = true;
+                    break;
+                }
+            }
+
+            if(!intersection){
+                output.add(subject);
+            }
+        }
+
+        return output;
     }
 
     // Assumes the input list is not null, non-empty, and sorted in ascending order
