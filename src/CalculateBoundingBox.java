@@ -26,7 +26,12 @@ public class CalculateBoundingBox {
         Grid grid = new Grid(lineArr);
 
         BoundingBox boundingBox = BoundingBoxUtil.calculateLargestMinimumBoundingBox(grid);
-        System.out.println(boundingBox);
+        if (boundingBox != null) {
+            System.out.println(boundingBox);
+        }
+        else {
+            System.out.println("No Valid Bounding Box detected for the provided input.");
+        }
 
         in.close();
     }

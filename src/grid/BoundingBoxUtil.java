@@ -17,15 +17,20 @@ public class BoundingBoxUtil {
     // Assumes the input list is not null and non-empty
     private static BoundingBox getLargestMinimumBoundingBox(List<List<Point>> populatedAreas){
         List<BoundingBox> boundingBoxes = new ArrayList<>();
+
+        // Calculate the Bounding Box for each detected area
         for(List<Point> points : populatedAreas){
             boundingBoxes.add(getBoundingBox(points));
         }
 
+        // Exclude Intersecting Bounding Boxes
         List<BoundingBox> nonIntersectionBoxes = getNonIntersectingBoundingBoxes(boundingBoxes);
 
         // Sort Boxes and retrieve the last box (the one with the largest area)
         Collections.sort(nonIntersectionBoxes);
-        return nonIntersectionBoxes.get(nonIntersectionBoxes.size() - 1);
+
+        int numBoxes = nonIntersectionBoxes.size();
+        return numBoxes > 0 ? nonIntersectionBoxes.get(numBoxes - 1) : null;
     }
 
     // Assumes the input list is not null
