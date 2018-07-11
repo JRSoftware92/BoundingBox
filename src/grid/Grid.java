@@ -14,6 +14,13 @@ public class Grid {
         this.grid = grid;
     }
 
+    public Grid(String[] grid){
+        this.grid = new char[grid.length][];
+        for(int i = 0; i < grid.length; i++){
+            this.grid[i] = grid[i].toCharArray();
+        }
+    }
+
     public char get(Point point) { return grid[point.y][point.x]; }
 
     public char get(int x, int y){
