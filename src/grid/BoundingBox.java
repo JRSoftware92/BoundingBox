@@ -1,10 +1,11 @@
+package grid;
 
 public class BoundingBox {
     private Point start, end;
 
     public BoundingBox(Point start, Point end){
-        this.start = start;
-        this.end = end;
+        this.start = start == null ? new Point (0, 0) : start;
+        this.end = end == null ? new Point(0, 0) : end;
     }
 
     public Point getStart() {
