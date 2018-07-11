@@ -5,6 +5,11 @@ import grid.Point;
 
 import java.util.*;
 
+/**
+ * A Grid Traversal class which uses BFS to traverse all non-empty, connected sections of a grid from a given point
+ * Please note: This entity only checks for Empty Characters when determining if a tile is not traversable. Therefore
+ * it will consider any character that is not a '-' character to be traversable, and will group all non '-' characters together.
+ */
 public class Visitor {
     private Set<Point> visitedPoints = new HashSet<>();
 
@@ -16,8 +21,8 @@ public class Visitor {
         explore(initial);
     }
 
-    public LinkedList<Point> getVisitedPoints(){
-        LinkedList<Point> sortedList = new LinkedList<>(visitedPoints);
+    public List<Point> getVisitedPoints(){
+        List<Point> sortedList = new ArrayList<>(visitedPoints);
 
         if(sortedList.size() < 2){
             return sortedList;
@@ -27,16 +32,12 @@ public class Visitor {
         return sortedList;
     }
 
-    public boolean hasMoved(){
-        return visitedPoints.size() > 1;
-    }
-
     private boolean hasVisited(Point point){
         return visitedPoints.contains(point);
     }
 
     private boolean canVisit(Point point){
-        return !hasVisited(point) && grid.get(point) != Point.EMPTY;
+        return grid.get(point) != Point.EMPTY;
     }
 
     private void visit(Point point){
@@ -52,11 +53,13 @@ public class Visitor {
         while(!queue.isEmpty()){
             current = queue.poll();
 
+            // Check to make sure that the current point is not empty
             if(canVisit(current)){
                 visit(current);
 
                 adjacentPoints = getAdjacentPoints(current);
                 for(Point p : adjacentPoints){
+                    // Prevents Re-queueing of visited points
                     if(!hasVisited(p)) {
                         queue.add(p);
                     }

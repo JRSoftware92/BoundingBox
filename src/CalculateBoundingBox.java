@@ -21,8 +21,7 @@ public class CalculateBoundingBox {
             lines.add(in.nextLine());
         }
 
-        String[] lineArr = new String[lines.size()];
-        lineArr = lines.toArray(lineArr);
+        String[] lineArr = lines.toArray(new String[lines.size()]);
 
         Grid grid = new Grid(lineArr);
 

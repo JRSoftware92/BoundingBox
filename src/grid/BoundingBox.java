@@ -1,5 +1,9 @@
 package grid;
 
+/**
+ * An Immutable Data Object class for containing two coordinates which represent the bounding box of a sub grid.
+ * Contains methods for determining width, height, and area, as well as intersections with other bounding boxes.
+ */
 public class BoundingBox implements Comparable<BoundingBox> {
     private Point start, end;
 
@@ -14,23 +18,25 @@ public class BoundingBox implements Comparable<BoundingBox> {
         this.end = new Point(maxX, maxY);
     }
 
+    @SuppressWarnings("unused")
     public Point getStart() {
         return start;
     }
 
+    @SuppressWarnings("unused")
     public Point getEnd() {
         return end;
     }
 
-    public int width(){
+    private int width(){
         return end.x - start.x;
     }
 
-    public int height(){
+    private int height(){
         return end.y - start.y;
     }
 
-    public int area(){
+    private int area(){
         return width() * height();
     }
 

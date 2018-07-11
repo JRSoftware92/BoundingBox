@@ -11,27 +11,26 @@ import java.util.*;
 public class BoundingBoxUtil {
 
     public static BoundingBox calculateLargestMinimumBoundingBox(Grid grid){
-        List<LinkedList<Point>> populatedAreas = getPopulatedAreas(grid);
-
-        return getLargestMinimumBoundingBox(populatedAreas);
+        return getLargestMinimumBoundingBox(getPopulatedAreas(grid));
     }
 
     // Assumes the input list is not null and non-empty
-    private static BoundingBox getLargestMinimumBoundingBox(List<LinkedList<Point>> populatedAreas){
-        LinkedList<BoundingBox> boundingBoxes = new LinkedList<>();
-        for(LinkedList<Point> points : populatedAreas){
+    private static BoundingBox getLargestMinimumBoundingBox(List<List<Point>> populatedAreas){
+        List<BoundingBox> boundingBoxes = new ArrayList<>();
+        for(List<Point> points : populatedAreas){
             boundingBoxes.add(getBoundingBox(points));
         }
 
-        LinkedList<BoundingBox> nonIntersectionBoxes = getNonIntersectingBoundingBoxes(boundingBoxes);
+        List<BoundingBox> nonIntersectionBoxes = getNonIntersectingBoundingBoxes(boundingBoxes);
 
+        // Sort Boxes and retrieve the last box (the one with the largest area)
         Collections.sort(nonIntersectionBoxes);
-        return nonIntersectionBoxes.getLast();
+        return nonIntersectionBoxes.get(nonIntersectionBoxes.size() - 1);
     }
 
     // Assumes the input list is not null
-    private static LinkedList<BoundingBox> getNonIntersectingBoundingBoxes(LinkedList<BoundingBox> boundingBoxes){
-        LinkedList<BoundingBox> output = new LinkedList<>();
+    private static List<BoundingBox> getNonIntersectingBoundingBoxes(List<BoundingBox> boundingBoxes){
+        List<BoundingBox> output = new ArrayList<>();
         int size = boundingBoxes.size();
 
         BoundingBox subject;
@@ -39,6 +38,8 @@ public class BoundingBoxUtil {
         for(int i = 0; i < size; i++){
             subject = boundingBoxes.get(i);
             intersection = false;
+
+            // Search for Intersections
             for(int j = 0; j < size; j++){
                 if(i != j && subject.intersectsWith(boundingBoxes.get(j))){
                     intersection = true;
@@ -55,35 +56,39 @@ public class BoundingBoxUtil {
     }
 
     // Assumes the input list is not null, non-empty, and sorted in ascending order
-    private static BoundingBox getBoundingBox(LinkedList<Point> sortedPoints){
-        Point start = sortedPoints.getFirst();
-        Point end = sortedPoints.getLast();
+    private static BoundingBox getBoundingBox(List<Point> sortedPoints){
+        Point start = sortedPoints.get(0);                         // Minimum Point
+        Point end = sortedPoints.get(sortedPoints.size() - 1);     // Maximum Point
 
         return new BoundingBox(start, end);
     }
 
     // Assumes the grid is not null
-    private static List<LinkedList<Point>> getPopulatedAreas(Grid grid){
+    private static List<List<Point>> getPopulatedAreas(Grid grid){
         int numRows = grid.numberOfRows();
         int numColumns = grid.numberOfColumns();
 
         Visitor visitor;
         Point point;
-        LinkedList<Point> visitedPoints;
+        List<Point> visitedPoints;
 
         Set<Point> allVisitedPoints = new HashSet<>();
-        List<LinkedList<Point>> output = new ArrayList<>();
+        List<List<Point>> output = new ArrayList<>();
         for(int i = 0; i < numRows; i++){
             for(int j = 0; j < numColumns; j++){
                 point = new Point(i, j);
-                if(!allVisitedPoints.contains(point)){
+
+                // Exclude Empty and Visited tiles
+                if(grid.get(point) != Point.EMPTY && !allVisitedPoints.contains(point)){
                     visitor = new Visitor(point, grid);
 
-                    if(visitor.hasMoved()){
-                        visitedPoints = visitor.getVisitedPoints();
-                        allVisitedPoints.addAll(visitedPoints);
-                        output.add(visitedPoints);
-                    }
+                    // Visitor automatically starts moving after construction
+                    visitedPoints = visitor.getVisitedPoints();
+
+                    // Used to ensure future visitors do not waste time on explored subsections
+                    allVisitedPoints.addAll(visitedPoints);
+
+                    output.add(visitedPoints);
                 }
             }
         }

@@ -1,8 +1,10 @@
 package grid;
 
+/**
+ * An Immutable Data Object class for containing a single coordinate
+ */
 public class Point implements Comparable<Point> {
     public static final char EMPTY = '-';
-    public static final char NONEMPTY = '*';
 
     public final int x, y;
 
