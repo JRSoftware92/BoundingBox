@@ -6,7 +6,7 @@ import grid.Point;
 import java.util.*;
 
 public class Visitor {
-    private HashSet<Point> visitedPoints = new HashSet<>();
+    private Set<Point> visitedPoints = new HashSet<>();
 
     private Grid grid;
 
@@ -16,8 +16,8 @@ public class Visitor {
         explore(initial);
     }
 
-    public List<Point> getVisitedPoints(){
-        List<Point> sortedList = new ArrayList<>(visitedPoints);
+    public LinkedList<Point> getVisitedPoints(){
+        LinkedList<Point> sortedList = new LinkedList<>(visitedPoints);
 
         if(sortedList.size() < 2){
             return sortedList;
@@ -25,6 +25,10 @@ public class Visitor {
 
         Collections.sort(sortedList);
         return sortedList;
+    }
+
+    public boolean hasMoved(){
+        return visitedPoints.size() > 1;
     }
 
     private boolean hasVisited(Point point){
@@ -62,7 +66,7 @@ public class Visitor {
     }
 
     private List<Point> getAdjacentPoints(Point point){
-        ArrayList<Point> output = new ArrayList<>();
+        List<Point> output = new ArrayList<>();
 
         int numRows = grid.numberOfRows();
         int numColumns = grid.numberOfColumns();

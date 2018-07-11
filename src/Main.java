@@ -2,8 +2,6 @@ import grid.*;
 
 public class Main {
     public static void main(String[] args){
-        // TODO
-
         Grid grid = initializeEmptyGrid(4, 4);
 
         grid.set(2, 2, Point.NONEMPTY);
@@ -11,7 +9,7 @@ public class Main {
         grid.set(3, 2, Point.NONEMPTY);
         grid.set(3, 3, Point.NONEMPTY);
 
-        BoundingBox box = BoundingBoxUtil.calculateBoundingBox(grid);
+        BoundingBox box = BoundingBoxUtil.calculateLargestMinimumBoundingBox(grid);
 
         System.out.println("Bounding Box: " + box.toString());
     }
