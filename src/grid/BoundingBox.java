@@ -3,9 +3,15 @@ package grid;
 public class BoundingBox implements Comparable<BoundingBox> {
     private Point start, end;
 
-    public BoundingBox(Point start, Point end){
-        this.start = start == null ? new Point (0, 0) : start;
-        this.end = end == null ? new Point(0, 0) : end;
+    public BoundingBox(Point topLeft, Point bottomRight){
+        int minX = Math.min(topLeft.x, bottomRight.x);
+        int maxX = Math.max(topLeft.x, bottomRight.x);
+
+        int minY = Math.min(topLeft.y, bottomRight.y);
+        int maxY = Math.max(topLeft.y, bottomRight.y);
+
+        this.start = new Point(minX, minY);
+        this.end = new Point(maxX, maxY);
     }
 
     public Point getStart() {

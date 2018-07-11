@@ -28,5 +28,7 @@ public class CalculateBoundingBox {
 
         BoundingBox boundingBox = BoundingBoxUtil.calculateLargestMinimumBoundingBox(grid);
         System.out.println(boundingBox);
+
+        in.close();
     }
 }
